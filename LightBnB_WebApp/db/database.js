@@ -121,11 +121,13 @@ const getAllReservations = function (guest_id, limit = 10) {
   WHERE reservations.guest_id = $1
   GROUP BY reservations.id, properties.title, reservations.start_date, properties.cost_per_night, properties.id
   ORDER BY start_date ASC
-  LIMIT 10;`
+  LIMIT $2;`
+
+  const values = [guest_id, limit];
 
   return pool
     // .query(queryString, values)
-    .query(queryString, [limit])
+    .query(queryString, values)
     .then((result) => {
       // console.log(result.rows);
       return result.rows;
